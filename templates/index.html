@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyecto Flask</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        body {
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .content {
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        h1 {
+            margin: 15px 0 25px;
+            font-size: 2.5rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(77, 171, 247, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s forwards;
+        }
+
+        p:nth-child(3) { animation-delay: 0.4s; }
+        p:nth-child(4) { animation-delay: 0.8s; }
+        p:nth-child(5) { animation-delay: 1.2s; }
+
+        .highlight {
+            color: #4dabf7;
+            font-weight: bold;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin: 0 auto 10px;
+            width: 100%;
+        }
+
+        .flask-logo {
+            width: 80px;
+            height: 80px;
+            animation: float 4s ease-in-out infinite, pulse 3s infinite;
+        }
+
+        .flask-path {
+            fill: #4dabf7;
+            filter: drop-shadow(0 0 8px rgba(77, 171, 247, 0.7));
+            transition: all 0.3s ease;
+        }
+
+        .flask-logo:hover .flask-path {
+            fill: #6bc1ff;
+            filter: drop-shadow(0 0 12px rgba(107, 193, 255, 0.9));
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #4dabf7; }
+            to { text-shadow: 0 0 12px #4dabf7; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.03); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.9; }
+        }
+
+        @keyframes liquid {
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            25% { transform: translateY(-3px) scaleY(0.98); }
+            50% { transform: translateY(0) scaleY(1); }
+            75% { transform: translateY(3px) scaleY(1.02); }
+        }
+
+        .liquid-effect {
+            animation: liquid 6s ease-in-out infinite;
+            transform-origin: center bottom;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="content">
+    <div class="logo-container">
+        <div class="flask-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path class="flask-path liquid-effect" d="M437.2 403.5L320 215V64h8c13.3 0 24-10.7 24-24V24c0-13.3-10.7-24-24-24H120c-13.3 0-24 10.7-24 24v16c0 13.3 10.7 24 24 24h8v151L10.8 403.5C-18.5 450.6 15.3 512 70.9 512h306.2c55.7 0 89.4-61.5 60.1-108.5zM137.9 320l48.2-77.6c3.7-5.2 5.8-11.6 5.8-18.4V64h64v160c0 6.9 2.2 13.2 5.8 18.4l48.2 77.6h-172z"/>
+            </svg>
+        </div>
+    </div>
+    <h1>Proyecto <span class="highlight">Flask</span></h1>
+    <p>Desarrollando una aplicación web moderna con Python y Flask</p>
+    <p>Explorando las posibilidades del backend con este poderoso microframework</p>
+    <p>¡Pronto más características sorprendentes!</p>
+</div>
+
+<script>
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    let mouse = { x: 0, y: 0 };
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function createStars(count) {
+        stars = [];
+        for (let i = 0; i < count; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.2,
+                speed: Math.random() * 0.4 + 0.1,
+                originalSpeed: Math.random() * 0.4 + 0.1,
+                distance: 0
+            });
+        }
+    }
+
+    function calculateDistance(star) {
+        const dx = mouse.x - star.x;
+        const dy = mouse.y - star.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function animateStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Fondo degradado más sutil
+        const gradient = ctx.createRadialGradient(
+            canvas.width/2, canvas.height/2, 0,
+            canvas.width/2, canvas.height/2, Math.max(canvas.width, canvas.height)/2
+        );
+        gradient.addColorStop(0, 'rgba(18, 18, 18, 0.9)');
+        gradient.addColorStop(1, 'rgba(10, 10, 30, 1)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Estrellas más sutiles
+        stars.forEach(star => {
+            star.distance = calculateDistance(star);
+            
+            const opacity = star.distance < 100 ? (0.8 - star.distance/150) : 0.6;
+            ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+            ctx.fill();
+
+            star.y += star.speed;
+            if (star.y > canvas.height) {
+                star.y = 0;
+                star.x = Math.random() * canvas.width;
+            }
+        });
+
+        requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        createStars(180);
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    resizeCanvas();
+    createStars(180);
+    animateStars();
+</script>
+
+</body>
+</html>
