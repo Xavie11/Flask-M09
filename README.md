@@ -1,17 +1,17 @@
-FLASK-M09
+# FLASK-M09
 
-Aplicació amb VENV i Flask
+## Aplicació amb VENV i Flask
 1- Creem el entorn VIRTUAL amb Python3
 
-python3 -m venv .venv
+    python3 -m venv .venv
 
 2- Iniciem el entorn Virtual
 
-source .venv/bin/activate
+    source .venv/bin/activate
 
 3 - Instalem el Flask
 
-pip install flask
+    pip install flask
 
 4- Creem la app.py
 
@@ -32,40 +32,40 @@ pip install flask
 
 6- Inicialitzem el flask amb la seguent comanda
 
-flask run --debug
+    flask run --debug
 
 7- Finalment comprovem amb l'IP que ens dona el Flask els dos endpoints creats
-http://127.0.0.1:5000/ep0
-http://127.0.0.1:5000/ep1
+    http://127.0.0.1:5000/ep0
+    http://127.0.0.1:5000/ep1
 
-Aplicació amb VENV,Flask inegrat en un server APACHE
+## Aplicació amb VENV,Flask inegrat en un server APACHE
 
 1- Instalem Python i Pip
-
-sudo apt update sudo apt install python3 python3-pip
+    
+    sudo apt update sudo apt install python3 python3-pip
 
 2- Instalem el server Apache2
 
-sudo apt install apache2
+    sudo apt install apache2
 
 3- Inicialitzem el servei de apache
 
-sudo systemctl start apache2
+    sudo systemctl start apache2
 
 4- Creem la arrel myflaskapp dins de /var/www
 
-cd /var/www
-sudo mkdir myflaskapp
+    cd /var/www
+    sudo mkdir myflaskapp
 
 5- Dins de la nova carpeta creem l'entorn virtual i l'activem
 
-sudo python3 -m venv venv
-
-source venv/bin/activate
+    sudo python3 -m venv venv
+    
+    source venv/bin/activate
 
 6- Instalem el flas amb el PIP dins de l'entorn virtual
 
-pip install Flask
+    pip install Flask
 
 7- Creem el app.py
 
@@ -90,11 +90,11 @@ pip install Flask
 
 9- Instalem el mod_wsgi
 
-sudo apt install libapache2-mod-wsgi-py3
+    sudo apt install libapache2-mod-wsgi-py3
 
 10- Creem el archiu de configuració de apache per la pàgina
 
-sudo nano /etc/apache2/sites-available/myflaskapp.conf
+    sudo nano /etc/apache2/sites-available/myflaskapp.conf
 
 11- Afegim el següent
 
@@ -121,7 +121,7 @@ sudo nano /etc/apache2/sites-available/myflaskapp.conf
 
 12- Creem el fitxer wsgi
 
-sudo nano /var/www/myflaskapp/myflaskapp.wsgi
+    sudo nano /var/www/myflaskapp/myflaskapp.wsgi
 
 13- Afegim el següent contingut
 
